@@ -1,0 +1,33 @@
+  - name: "Install docker and files"
+    yum:
+     name: "{{ item }}"
+     state: latest
+    with_items:
+     - yum-utils
+     - device-mapper-persistent-data
+     - lvm2
+  - name: "write docker repo"
+    get_url:
+     url: https://download.docker.com/linux/centos/docker-ce.repo
+     dest: /etc/yum.repos.d/docker-ce.repo
+     mode: 0644		
+  - name: " Install docker"
+    yum:
+     name: docker-ce
+     state: present
+  - name: " start and enable docker"
+    service:
+     name: docker
+     state: started
+     enabled: yes
+  - name: " Install pip"
+    yum:
+     name: python-pip
+     state: latest
+  - name: " Install compose"
+    pip:
+     name: docker-compose
+  - name: "build image"
+    command: docker build -t test_image .
+  - name: "run container"
+    command: docker run --name test -d -p 80:80 -p 222:22 test_container

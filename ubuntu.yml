@@ -1,0 +1,26 @@
+  - name: "apt https packets"
+    apt:
+     name: "{{ item }}"
+     state: latest
+    with_items:
+     - apt-transport-https
+     - ca-certificates
+     - curl
+     - software-properties-common
+  - name: "ubuntu docker GPG"
+    command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -		
+  - name: " Install docker Ubuntu"
+    apt:
+     name: docker-ce
+     state: present
+  - name: "Ubuntu docker compose"
+    command: sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose	
+  - name: "Ubuntu compose permissions"
+    command: sudo chmod +x /usr/local/bin/docker-compose	
+  - name: " Install compose"
+    pip:
+     name: docker-compose
+  - name: "build image"
+    command: docker build -t test_image .
+  - name: "run container"
+    command: docker run --name test -d -p 80:80 -p 222:22 test_container
