@@ -30,4 +30,4 @@
   - name: "build image"
     command: docker build -t test_image .
   - name: "run container"
-    command: docker run --name test -d -p 80:80 -p 222:22 test_container
+    command: docker run --name test -d -p 80:80 -p 222:22 test_image
